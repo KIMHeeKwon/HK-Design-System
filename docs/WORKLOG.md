@@ -64,3 +64,25 @@
 - guidelines에 dev 문서(RATIONALE/WORKLOG)가 실림 — 다음 동기화에서 guidelines 디스커버리 정제 검토.
 
 **다음 단계**: 재동기화는 `node .ds-sync/resync.mjs … --remote …`로 앵커 기반 증분 실행.
+
+## 2026-08-15 — 폰트 로컬 번들링 (오프라인 안전화)
+
+**목표**: `[FONT_REMOTE]`(Google Fonts 원격 @import) 제거 — 라이브러리·Storybook·design-sync
+전부 외부 폰트 의존 없이 동작하게 한다.
+
+**결정사항**:
+- `@fontsource/space-grotesk`(latin, 400/500/700)를 **엔트리 `src/index.ts`에서 import**
+  (중간 `.ts` 경유 시 `sideEffects:["*.css"]`로 트리셰이킹됨 — 실측). Vite가 woff2/woff를
+  base64로 `style.css`에 인라인 → 외부 폰트 참조 0.
+- Storybook은 `.storybook/preview.ts`에서 동일 폰트 import, Google `preview-head.html` 제거.
+- JetBrains Mono는 미번들(어느 컴포넌트도 `vars.font.mono` 미사용, 시스템 폴백).
+
+**산출물**: `_ds_bundle.css` ~127KB(폰트 인라인), design-sync `styles.css` @import 2→1.
+KKOBAK에 변경분 재업로드(앵커 기반 재동기화, `upload.styling:true`) + 앵커 갱신. 커밋 `6ff04c3`.
+
+**현재 진행도** (2026-08-15 실측):
+- 드라이버 `--remote` 영수증 `ok:true`, `pendingGrade` 없음, `changed/added` 없음.
+- reference-drift canary(Dialog·Input·Badge·Text·Select) 5개 시트 재확인 — 발산 없음, 등급 유지.
+- `[FONT_REMOTE]` 소멸, 잔여 경고는 `[RENDER_THIN] Dialog`(triaged)뿐.
+
+**남은 미해결**: woff 폴백 동봉(woff2-only 커스텀 `@font-face`로 ~절반 감량 가능, 미적용).
