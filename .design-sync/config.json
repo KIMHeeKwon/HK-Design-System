@@ -1,0 +1,15 @@
+{
+  "projectId": "03272dcd-2cc4-4cad-9c3a-200ab4a4bcc0",
+  "shape": "storybook",
+  "pkg": "hk-design-system",
+  "globalName": "HKDS",
+  "storybookStatic": ".design-sync/sb-reference",
+  "storybookConfigDir": ".storybook",
+  "buildCmd": "npm run build",
+  "provider": { "component": "ThemeProvider" },
+  "readmeHeader": ".design-sync/conventions.md",
+  "overrides": {
+    "Input": { "cardMode": "column" },
+    "Dialog": { "cardMode": "single", "primaryStory": "Open" }
+  }
+}

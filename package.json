@@ -1,0 +1,52 @@
+{
+  "name": "hk-design-system",
+  "version": "0.1.0",
+  "description": "HK Design System — React + TypeScript + vanilla-extract component library (Metaverse theme).",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist",
+    "typecheck": "tsc --noEmit",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/react-vite": "^8.6.18",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vanilla-extract/css": "^1.21.2",
+    "@vanilla-extract/vite-plugin": "^5.2.6",
+    "@vitejs/plugin-react": "^4.7.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "storybook": "^8.6.18",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "esbuild@0.25.12": true
+  }
+}
