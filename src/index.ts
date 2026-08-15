@@ -1,3 +1,9 @@
+// Self-hosted fonts (latin subset) — bundled so no external font host is needed.
+// Imported from the entry so the side-effect CSS survives tree-shaking.
+import "@fontsource/space-grotesk/latin-400.css";
+import "@fontsource/space-grotesk/latin-500.css";
+import "@fontsource/space-grotesk/latin-700.css";
+
 // Side-effect: register :root design tokens + global base styles.
 import "./theme";
 

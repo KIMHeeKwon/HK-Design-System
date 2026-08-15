@@ -20,12 +20,20 @@ Corrections and gotchas carried between syncs. Read before running.
 
 ## Re-sync risks (watch-list for the next run)
 
-- **`[FONT_REMOTE]` Space Grotesk / JetBrains Mono.** Fonts load via a remote
-  `@import` (Google Fonts) captured from `.storybook/preview-head.html`, not a
-  local bundle. Verified only under the assumption the font host is reachable at
-  render time. If claude.ai/design blocks external font hosts, designs fall back
-  to system sans. To make it offline-safe: download the woff2 files, add
-  `@font-face` locally, and set `cfg.extraFonts` — then re-verify.
+- **Fonts are now bundled locally (resolved `[FONT_REMOTE]`, 2026-08-15).**
+  Space Grotesk (latin, 400/500/700) is self-hosted via `@fontsource/space-grotesk`,
+  imported from `src/index.ts` (must stay in the *entry* — routing through an
+  intermediate `.ts` gets tree-shaken away by `sideEffects: ["*.css"]`). Vite
+  inlines the woff2/woff as base64 into `dist/style.css` (~127 KB), so the design
+  bundle has **zero external font references** and `styles.css` has 1 `@import`
+  (component CSS only). Storybook loads the same fonts via imports in
+  `.storybook/preview.ts` (the Google Fonts `preview-head.html` was removed —
+  keeping it would make the converter re-scrape a remote `@import`).
+  - JetBrains Mono is NOT bundled (no component uses `vars.font.mono`; it falls
+    back to system mono). Re-add `@fontsource/jetbrains-mono` if a mono component lands.
+  - Size optimization available: the fontsource CSS ships both woff2 AND woff;
+    woff2 is universal, so a custom `@font-face` with woff2-only would roughly
+    halve the 127 KB. Not done — kept the robust fontsource path.
 - **`[REFERENCE_STALE?]` is expected here** when only `ThemeProvider` (an
   unstoried export) changed: existing stories are unaffected, so the reference
   storybook is byte-identical. Rebuild the reference whenever a *storied*
